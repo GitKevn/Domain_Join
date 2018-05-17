@@ -1,6 +1,7 @@
 # Domain_Join
 Programitically join a machine to a Windows active directory
 
+
 using System;
 using System.Configuration;
 using System.Diagnostics;
@@ -13,6 +14,22 @@ namespace AD_Join
     {
         private static void Main(string[] args)
         {
+            ProcessStartInfo process = new ProcessStartInfo();
+            process.FileName = "PCRenamer.exe";
+            using (Process proc = Process.Start(process))
+            {
+                proc.WaitForExit();
+
+                // print the status of command
+                Console.WriteLine("Exit code = " + proc.ExitCode);
+            }
+
+            //Is reboot needed here or at end? If needed here seprate execuatables and remove call for PCRenamer
+            //var psi = new ProcessStartInfo("reboot", "/r /t 0");
+            //psi.CreateNoWindow = true;
+            //psi.UseShellExecute = false;
+            //Process.Start(psi);
+
             // Defined Variables$
             int JOIN_DOMAIN = 1;
             int ACCT_CREATE = 2;
@@ -20,7 +37,6 @@ namespace AD_Join
 
             // Defined Strings
             // Username must have rights for AD Join
-            // Set in App.Config
             string domain = ConfigurationManager.AppSettings["Domain"];
             string password = ConfigurationManager.AppSettings["Password"];
             string username = ConfigurationManager.AppSettings["User"];
